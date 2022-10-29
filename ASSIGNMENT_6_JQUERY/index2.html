@@ -1,0 +1,131 @@
+<html>
+	<head>
+		<script type='text/javascript' src='jquery.min.js'> </script>
+</head>
+
+
+<style>
+
+.error{
+			display: none;
+			margin-left: 10px;
+		}		
+		
+		.error_show{
+			color: red;
+			margin-left: 10px;
+		}
+		
+		input.invalid, textarea.invalid{
+			border: 2px solid red;
+		}
+		
+		input.valid, textarea.valid{
+			border: 2px solid green;
+		}
+
+</style>
+
+
+<script>
+
+
+$(document).ready(function() {
+
+  document.getElementById("displayUser").innerHTML='Welcome ' + localStorage.getItem("UserName") + '';
+                //   var UserNames = localStorage.getItem("UserName");
+                   console.log(localStorage.getItem("UserName"));
+
+                    $('#txtFirstNumber').on('input', function() {
+					var input=$(this);
+					var is_name=input.val();
+
+                    var x = document.getElementById("erros");
+                    var y = document.getElementById("erros123");
+                    if (is_name == "") {
+                        input.removeClass("invalid").addClass("valid");
+					
+                            x.style.color="red";
+                            x.style.display = "block";
+                                } else {
+                            x.style.display = "none";
+                            input.removeClass("valid").addClass("invalid");
+                    }
+                    if(!$.isNumeric(is_name) || is_name.length ==0){
+                        input.removeClass("valid").addClass("invalid");
+                        y.style.color="red";
+                            y.style.display = "block";
+                                } else {
+                            y.style.display = "none";
+                            input.removeClass("invalid").addClass("valid");
+                    }
+                });
+
+
+                    $('#txtSecondNumber').on('input', function() {
+					var input=$(this);
+					var is_name1=input.val();
+
+                    var x = document.getElementById("err1");
+                    var y = document.getElementById("err");
+                    if (is_name1 == "") {
+                        input.removeClass("invalid").addClass("valid");
+					
+                            x.style.color="red";
+                            x.style.display = "block";
+                                } else {
+                            x.style.display = "none";
+                            input.removeClass("valid").addClass("invalid");
+                    }
+                    if(!$.isNumeric(is_name1) || is_name1.length ==0){
+                        input.removeClass("valid").addClass("invalid");
+                        y.style.color="red";
+                            y.style.display = "block";
+                                } else {
+                            y.style.display = "none";
+                            input.removeClass("invalid").addClass("valid");
+                    }
+	
+				});
+				
+            });
+
+			function Operation(operand) { 
+				
+				var firstValue = parseInt(document.getElementById('txtFirstNumber').value);
+				var secondValue = parseInt(document.getElementById('txtSecondNumber').value);			
+				var result = 0;
+				switch(operand){
+
+					case '+' : 	result = ( (x, y) => {	return x + y; } )( firstValue, secondValue );
+								break;
+					case '-' : 	result = ( (x, y) => {	return x - y; } )( firstValue, secondValue );
+								break;
+					case '*' : 	result = ( (x, y) => {	return x * y; } )( firstValue, secondValue );
+								break;
+					case '/' : 	result = ( (x, y) => {	return x / y; } )( firstValue, secondValue );
+								break;
+				}
+
+                    $("#country").val(result);
+                    alert(result);
+
+			}		
+            
+		</script>
+	</head>
+	<body>
+    <span style="font-weight: bold; float: right;font-size: 30px;" id="displayUser"></span>
+		<fieldset style="width:350px">
+			<legend>Calculator :</legend>
+			
+					Number1:<input type="text" id="txtFirstNumber" /><span id="erros" style="display: none;">This field Number is required</span>   <span id="erros123" style="display: none;">Should be a valid Number</span>	<br><br>
+					Number2:<input type="text" id="txtSecondNumber" /><span id="err1" style="display: none;">This field Number is required</span>   <span id="err" style="display: none;">Should be a valid Number</span>	<br><br>
+					<input type="button" id="btnADD" value="Addition" onclick="Operation('+')" />
+					<input type="button" id="btnSUB" value="Subtraction" onclick="Operation('-')"/><br><br>
+					<input type="button" id="btnMUL" value="Multiplication" onclick="Operation('*')"/>
+					<input type="button" id="btnDIV" value="Division" onclick="Operation('/')"/>	<br><br>
+          RESULT : <input type="text" id="country" name="country" value="" readonly>
+		</fieldset>		
+	</body>
+</html>

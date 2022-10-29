@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--Code by Chris Youderian, ContactMetrics.com, http://contactmetrics.com/blog/validate-contact-form-jquery, Code released under an MIT license, http://opensource.org/licenses/MIT -->
+<html lang="en">
+	<head>
+		<script type='text/javascript' src='jquery.min.js'></script>
+    </head>
+	
+	<!-- Styles -->
+	<style>
+		#contact label{
+			display: inline-block;
+			width: 100px;
+			text-align: right;
+		}
+		#contact_submit{
+			padding-left: 100px;
+		}
+		#contact div{
+			margin-top: 1em;
+		}
+		textarea{
+			vertical-align: top;
+			height: 5em;
+		}
+			
+		.error{
+			display: none;
+			margin-left: 10px;
+		}		
+		.error1{
+			display: none;
+			margin-left: 10px;
+		}	
+		.error2{
+			display: none;
+			margin-left: 10px;
+		}	
+		.error_show{
+			color: red;
+			margin-left: 10px;
+		}
+		
+		input.invalid, textarea.invalid{
+			border: 2px solid red;
+		}
+		
+		input.valid, textarea.valid{
+			border: 2px solid green;
+		}
+	</style>
+	
+	<!-- JavaScript Code -->
+	<script>
+		$(document).ready(function() {
+
+			var checkpass = "YES";
+
+				$('#contact_name').on('input', function() {
+					var input=$(this);
+					var is_name=input.val();
+					if(is_name){
+						input.removeClass("invalid").addClass("valid");
+						
+						console.log("OKAY");
+						$(".error").text("This Field Username is Required");
+						
+					}
+					else{input.removeClass("valid").addClass("invalid");}
+					//$(".error1").text("");
+
+					localStorage.setItem("UserName",is_name);
+					//$("#error1").text("");
+
+				});
+				
+
+				$('#contact_email').on('input', function() {
+					var input=$(this);
+					var re = /^[\w.+\-]+@northeastern\.edu$/;
+					var is_email=re.test(input.val());
+					if(is_email){
+						input.removeClass("invalid").addClass("valid");
+						$(".error1").text("Not a valid Email ID");
+					}
+					else{input.removeClass("valid").addClass("invalid");}
+				});
+				
+
+				$('#contact_message').keyup(function(event) {
+					var input=$(this);
+					var message=$(this).val();
+					console.log(message);
+					if(message){
+						input.removeClass("invalid").addClass("valid");
+						
+					}
+					else{
+						input.removeClass("valid").addClass("invalid");
+					}	
+
+					
+					if( message.length < 5 && message.length > 0 ){
+						input.removeClass("valid").addClass("invalid");
+						$(".error1").text("Not a valid Password");
+						
+					}
+
+					if(message.length==0){
+						input.removeClass("valid").addClass("invalid");
+						$(".error2").text("Input Cannot be NULL ");
+					}
+				});
+		
+
+			$("#contact_submit button").click(function(event){
+				var form_data=$("#contact").serializeArray();
+				var error_free=true;
+				for (var input in form_data){
+					var element=$("#contact_"+form_data[input]['name']);
+					var valid=element.hasClass("valid");
+					var error_element=$("span", element.parent());
+					console.log(checkpass);
+					if (!valid){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.removeClass("error1").addClass("error_show"); 
+						error_element.removeClass("error2").addClass("error_show"); 
+						error_free=false;
+						
+					}
+					else{
+						error_element.removeClass("error_show").addClass("error");
+						error_element.removeClass("error_show").addClass("error1");
+						error_element.removeClass("error_show").addClass("error2");
+						
+					}
+				}
+				if (!error_free){
+					event.preventDefault(); 
+				}
+				else{
+						if(checkpass=="NO"){
+						window.location.href="index2.html";
+						alert("Data Saved");
+					}
+				}
+			});
+
+
+
+var formPasswordForm = document.forms["passwordForm"];
+var elemPW = document.getElementById("contact_message");
+var bPasswordPasses = false;
+
+function fnValidatePassword(evt) {
+    // enter your regular expression to check for at least 8 characters here
+    var regexPasswordLength = /.{8,}/; // test for at least 8 characters
+    // enter your regular expression to check for an uppercase letter here
+    var regexPasswordContainsUpperCase = /[A-Z]/; //test for uppercase letter
+    // enter your regular expression to check for a lowercase letter here
+    var regexPasswordContainsLowerCase = /[a-z]/; //test for lowercase letter
+    // enter your regular expression to check for a number here
+    var regexPasswordContainsNumber = /\d/; //test for number 
+    // enter your regular expression to check for a special character here
+    var regexPasswordContainsSpecialChar = /\W/; //test for special character
+
+    bPasswordPasses = true;
+
+    if (!regexPasswordLength.test(elemPW.value)) {
+        pwdHint.innerHTML = 'Password must be at least 8 characters.';
+        pwdHint.style.display = "inline";
+		pwdHint.style.color = "red";
+		document.getElementById("contact_message").style.border="2px solid red";
+        bPasswordPasses = false;
+
+		
+    }
+
+    if (!regexPasswordContainsUpperCase.test(elemPW.value)) {
+        pwdHint.innerHTML = 'Password must contain an uppercase character.';
+        pwdHint.style.display = "inline";
+		pwdHint.style.color = "red";
+		document.getElementById("contact_message").style.border="2px solid red";
+        bPasswordPasses = false;
+		
+    }
+
+    if (!regexPasswordContainsLowerCase.test(elemPW.value)) {
+        pwdHint.innerHTML = 'Password must contain an lowercase character.';
+        pwdHint.style.display = "inline";
+		pwdHint.style.color = "red";
+        bPasswordPasses = false;
+		document.getElementById("contact_message").style.border="2px solid red";
+		
+    }
+
+    if (!regexPasswordContainsNumber.test(elemPW.value)) {
+        pwdHint.innerHTML = 'Password must contain a number.';
+        pwdHint.style.display = "inline";
+		pwdHint.style.color = "red";
+        bPasswordPasses = false;
+		document.getElementById("contact_message").style.border="2px solid red";
+    }
+
+    if (!regexPasswordContainsSpecialChar.test(elemPW.value)) {
+        pwdHint.innerHTML = 'Password must contain a special character.';
+        pwdHint.style.display = "inline";
+		pwdHint.style.color = "red";
+        bPasswordPasses = false;
+		document.getElementById("contact_message").style.border="2px solid red";
+    }
+
+    if (bPasswordPasses) {
+        pwdHint.innerHTML = 'Password passes all Requirements.';
+		pwdHint.style.color = "green";
+		checkpass="NO";
+		document.getElementById("contact_message").style.border="2px solid green";
+
+    }
+    evt.preventDefault();
+}
+
+formPasswordForm.addEventListener("submit", fnValidatePassword);
+			
+		});
+	</script>
+	
+    <body>
+		<form id="contact" method="post" name="passwordForm" action="">
+			<!-- Name -->
+			<div>
+				<label for="contact_name">User Name:</label>
+				<input type="text" required="required" id="contact_name" name="name"></input>
+				<span class="error">This field User Name is required</span>		
+			</div>
+		
+			<div>
+				<label for="contact_email">Email:</label>
+				<input type="email" required="required" id="contact_email" name="email"></input>
+				<span class="error1">A valid email address is required</span>				
+			</div>						
+			<div>
+				<label for="contact_message">Password:</label>
+				<input id="contact_message" required="required" type="password" name="message"></input>
+				<span class="error2">This field Password is required</span>	
+
+				<br> <span style="margin-left:30px ;" class="hint" id="pwdHint">Password must be at least 8 characters and must contain uppercase & lowercase letters, a number, and a special character.</span> 
+        <br>
+											
+			</div>					
+			<!-- Submit Button -->
+			<div id="contact_submit">				
+				<button type="submit" name="submit">Submit</button>
+			</div>
+		</form>
+	</body>
+</html>
+
+      
+    
+
